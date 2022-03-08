@@ -1,1 +1,106 @@
-<h1>Hello world!</h1>
+<canvas id="flower" width="1000" height="1000" style="border:1px solid #000000;"></canvas>
+<script>
+  function debugCircle(x, y) {
+    let debugpeltCenter = this.c.getContext("2d");
+    debugpeltCenter.beginPath();
+    debugpeltCenter.arc(x,
+        y,
+        10, 0,
+        Math.PI * 2);
+    debugpeltCenter.stroke();
+  }
+
+  function randomColor() {
+    return Math.floor(Math.random() * 16777215).toString(16);
+  }
+
+  class PeltDrawer {
+    constructor(radius, centerX, centerY, centralCircleRadius, centerColor) {
+      this.centerX = centerX;
+      this.centerY = centerY;
+      this.centralCircleRadius = centralCircleRadius;
+      this.peltRadius = radius;
+      this.c = document.getElementById("flower");
+      this.centerColor = centerColor;
+
+      let centralCircle = this.c.getContext("2d");
+      centralCircle.beginPath();
+      centralCircle.arc(this.centerX, this.centerY, this.centralCircleRadius, 0, 2 * Math.PI);
+      centralCircle.strokeStyle = "#FF0000";
+      centralCircle.fillStyle = "#FF0000";
+      centralCircle.stroke();
+      centralCircle.fill();
+    }
+
+    draw(angle, peltLength, color) {
+      let pelt = this.c.getContext("2d");
+      pelt.strokeStyle = "#000000";
+      pelt.beginPath();
+      let peltAngleStart = Math.PI + angle;
+      let peltAngleFinish = angle + peltLength;
+      let peltCircleCenterX = centerX + (Math.cos(angle) * this.peltRadius)
+      let peltCircleCenterY = centerY + (Math.sin(angle) * this.peltRadius)
+      pelt.arc(peltCircleCenterX,
+          peltCircleCenterY,
+          this.peltRadius, peltAngleStart,
+          peltAngleFinish);
+      pelt.fillStyle = "#" + color;
+
+      let nextPeltAngle = angle + peltLength;
+      let nextPeltAngleStart = angle;
+      let nextPeltAngleFinish = nextPeltAngleStart - peltLength * 2;
+      let nextPeltCircleCenterX = centerX + (Math.cos(nextPeltAngle) * this.peltRadius)
+      let nextPeltCircleCenterY = centerY + (Math.sin(nextPeltAngle) * this.peltRadius)
+      pelt.arc(nextPeltCircleCenterX,
+          nextPeltCircleCenterY,
+          this.peltRadius, nextPeltAngleStart,
+           nextPeltAngleFinish,
+          true);
+      pelt.stroke();
+      pelt.fill()
+
+      let center = this.c.getContext("2d");
+      center.strokeStyle = this.centerColor;
+      center.beginPath();
+      center.arc(this.centerX,
+          this.centerY,
+          this.centralCircleRadius, 0,
+          Math.PI * 2);
+      center.fillStyle = "#" + this.centerColor;
+      center.stroke();
+      center.fill()
+    }
+  }
+
+  let peltRadius = 150;
+  let centerX = 500;
+  let centerY = 500;
+  let centralCircleRadius = 50;
+
+  let pelts = 6;
+  let peltAngle = (Math.PI * 2) / pelts;
+
+  let pd = new PeltDrawer(peltRadius, centerX, centerY, centralCircleRadius, randomColor());
+  let fillStyle = randomColor();
+  let index = 0;
+  setInterval(function () {
+    index += 1;
+    angle = peltAngle * index;
+    fillStyle = randomColor();
+    pd.draw(angle, peltAngle, fillStyle);
+  }, 200);
+  // for (let i = 0; i < pelts; i++) {
+  //   angle = peltAngle * i;
+  //   fillStyle = Math.floor(Math.random()*16777215).toString(16);
+  //   pd.draw(angle, peltAngle, fillStyle);
+  // }
+  // pd.draw(peltAngle, peltAngle, fillStyle);
+  // fillStyle = Math.floor(Math.random() * 16777215).toString(16);
+  // pd.draw(peltAngle * 2, peltAngle, fillStyle);
+  // fillStyle = Math.floor(Math.random() * 16777215).toString(16);
+  // pd.draw(peltAngle * 3, peltAngle, fillStyle);
+  // fillStyle = Math.floor(Math.random() * 16777215).toString(16);
+  // pd.draw(peltAngle * 4, peltAngle, fillStyle);
+  // pd.draw(peltAngle * 2, peltAngle, fillStyle);
+  // pd.draw(peltAngle * 1, 0.1, Math.floor(Math.random()*16777215).toString(16));
+</script>
