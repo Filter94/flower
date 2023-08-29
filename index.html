@@ -24,7 +24,14 @@
   function randomColor() {
     return "#" + Math.floor(Math.random() * 16777215).toString(16);
   }
-
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
   function update() {
     output.innerHTML = slider.value;
     pelts = slider.value;
@@ -110,12 +117,12 @@
 
   slider.dispatchEvent(new Event('input'));
 
-  let fillStyle = randomColor();
+  let fillStyle = getRandomColor();
   let index = 0;
   setInterval(function () {
     index += 1;
     angle = peltAngle * index;
-    fillStyle = randomColor();
+    fillStyle = getRandomColor();
     pd.draw(angle, peltAngle, fillStyle);
   }, 200);
   // for (let i = 0; i < pelts; i++) {
